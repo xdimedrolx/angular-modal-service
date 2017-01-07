@@ -109,6 +109,11 @@ module.factory('ModalService', ['$animate', '$document', '$compile', '$controlle
             appendChild(body, modalElement);
           }
 
+          // Finally, append any custom classes to the body
+          if (options.bodyClass) {
+             body[0].classList.add(options.bodyClass);
+          }
+
           //  We now have a modal object...
           var modal = {
             controller: modalController,
@@ -125,6 +130,11 @@ module.factory('ModalService', ['$animate', '$document', '$compile', '$controlle
 
             //  Resolve the 'close' promise.
             closeDeferred.resolve(result);
+
+            //  Remove the custom class from the body
+            if (options.bodyClass) {
+              body[0].classList.remove(options.bodyClass);
+            }
 
             //  Let angular remove the element and wait for animations to finish.
             $animate.leave(modalElement)

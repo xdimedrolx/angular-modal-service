@@ -144,4 +144,43 @@ describe('dom', () => {
 
   });
 
+  it('should append the custom css class to the body', () => {
+
+    $httpBackend.expectGET('some/template1.html');
+
+    ModalService.showModal({
+      controller: "DomController",
+      templateUrl: "some/template1.html",
+      bodyClass: 'with-modal'
+    }).then((modal) => {
+
+      expect(document.body.className).toMatch('with-modal');
+
+    });
+
+    $httpBackend.flush();
+
+  });
+
+  it('should remove the custom css class to the body when the controller closes the modal', () => {
+
+    $httpBackend.expectGET('some/template1.html');
+
+    ModalService.showModal({
+      controller: "DomController",
+      templateUrl: "some/template1.html",
+      bodyClass: 'with-modal'
+    }).then((modal) => {
+
+      modal.closed.then((result) => {
+        expect(document.body.className).not.toMatch('with-modal');
+      });
+
+      modal.scope.close();
+    });
+
+    $httpBackend.flush();
+
+  });
+
 });
